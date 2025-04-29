@@ -1,0 +1,70 @@
+syntax = 'proto3';
+package grpc;
+
+option go_package = 'github.com/anhilmy/tablelink-auth/pkg/grpc';
+
+service Auth {
+    rpc Login(LoginRequest) returns (LoginResponse);
+    rpc GetAllUser(Empty) returns (UserEntity);
+    rpc CreateUser(CreateUserRequest) returns (Response);
+    rpc UpdateUser(UpdateUserRequest) returns (Response);
+    rpc DeleteUser(DeleteUserRequest) returns (Response);
+}
+
+message Empty {}
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;    
+}
+
+message LoginResponse {
+    bool status = 1;
+    string message = 2;
+
+    message access_token {
+        string access_token = 1;
+    }
+    
+    access_token data = 3;   
+}
+
+message GetAllUserResponse {
+    bool status = 1;
+    string message = 2;
+    message UserList {
+        repeated UserEntity user = 1;
+    }
+    UserList data = 3;   
+}
+
+message CreateUserRequest {
+    string role_id = 1;
+    string name = 2;
+    string email = 3;
+    string password = 4;
+}
+
+message UpdateUserRequest {
+    string id = 1;
+    string role_id = 2;
+    string name = 3;
+    string email = 4;
+}
+
+message DeleteUserRequest {
+    string id = 1;
+}
+
+message UserEntity {
+    string role_id = 1;
+    string role_name = 2;
+    string name = 3;
+    string email = 4;
+    string last_access = 5;
+}
+
+message Response {
+    string status = 1;
+    string message = 2;
+}
