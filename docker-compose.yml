@@ -5,12 +5,14 @@ services:
         image: redis:latest
         container_name: redis
         ports:
-            - '6379:6379'
+            - '6679:6379'
 
     postgres:
         image: postgres:latest
         container_name: postgres
         environment:
             POSTGRES_PASSWORD: 'Admin123!!'
+            POSTGRES_USER: 'postgres'
+            POSTGRES_DB: 'postgres'
         ports:
-            - '5432:5432'
+            - '6432:5432'
