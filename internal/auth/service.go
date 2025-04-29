@@ -60,7 +60,7 @@ func (s *service) Login(ctx context.Context, req *grpc.LoginRequest) (*grpc.Logi
 }
 
 func (s *service) Logout(ctx context.Context) (logoutResponse, error) {
-
+	return logoutResponse{}, nil
 }
 
 func (s *service) Create(ctx context.Context, req createRequest) (createResponse, error) {

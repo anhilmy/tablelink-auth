@@ -85,7 +85,7 @@ func main() {
 	authServ := auth.NewService(repo, rdsClient)
 
 	s := grpc.NewServer(
-		grpc.UnaryServerInterceptor(interceptor.IncomingRequest()),
+		grpc.UnaryInterceptor(interceptor.IncomingRequest()),
 	)
 
 	implServer := NewServer(authServ)
