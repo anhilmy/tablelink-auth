@@ -111,8 +111,7 @@ func NewServer(auth auth.Service) *server {
 }
 
 func (s server) Login(ctx context.Context, req *lgrpc.LoginRequest) (*lgrpc.LoginResponse, error) {
-	// TODO implement me
-	panic("implement me")
+	return s.authServ.Login(ctx, req)
 }
 
 func (s server) GetAllUser(context.Context, *lgrpc.Empty) (*lgrpc.GetAllUserResponse, error) {
