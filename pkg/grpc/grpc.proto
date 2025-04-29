@@ -5,7 +5,7 @@ option go_package = 'github.com/anhilmy/tablelink-auth/pkg/grpc';
 
 service Auth {
     rpc Login(LoginRequest) returns (LoginResponse);
-    rpc GetAllUser(Empty) returns (UserEntity);
+    rpc GetAllUser(Empty) returns (GetAllUserResponse);
     rpc CreateUser(CreateUserRequest) returns (Response);
     rpc UpdateUser(UpdateUserRequest) returns (Response);
     rpc DeleteUser(DeleteUserRequest) returns (Response);

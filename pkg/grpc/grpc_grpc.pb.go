@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	GetAllUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserEntity, error)
+	GetAllUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetAllUserResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*Response, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error)
@@ -46,8 +46,8 @@ func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *authClient) GetAllUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserEntity, error) {
-	out := new(UserEntity)
+func (c *authClient) GetAllUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetAllUserResponse, error) {
+	out := new(GetAllUserResponse)
 	err := c.cc.Invoke(ctx, "/grpc.Auth/GetAllUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (c *authClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts
 // for forward compatibility
 type AuthServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	GetAllUser(context.Context, *Empty) (*UserEntity, error)
+	GetAllUser(context.Context, *Empty) (*GetAllUserResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*Response, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*Response, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*Response, error)
@@ -101,7 +101,7 @@ type UnimplementedAuthServer struct {
 func (UnimplementedAuthServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedAuthServer) GetAllUser(context.Context, *Empty) (*UserEntity, error) {
+func (UnimplementedAuthServer) GetAllUser(context.Context, *Empty) (*GetAllUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllUser not implemented")
 }
 func (UnimplementedAuthServer) CreateUser(context.Context, *CreateUserRequest) (*Response, error) {

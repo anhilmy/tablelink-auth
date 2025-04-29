@@ -8,7 +8,10 @@ import (
 	"net"
 	"os"
 
+	"github.com/anhilmy/tablelink-auth/internal/auth"
 	lgrpc "github.com/anhilmy/tablelink-auth/pkg/grpc"
+	"github.com/anhilmy/tablelink-auth/pkg/interceptor"
+	"github.com/anhilmy/tablelink-auth/repository"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	"github.com/redis/go-redis/v9"
@@ -75,8 +78,17 @@ func main() {
 		panic(err)
 	}
 
-	s := grpc.NewServer()
-	implServer := &server{}
+	// repo
+	repo := repository.NewRepository(db, rdsClient)
+
+	// service
+	authServ := auth.NewService(repo, rdsClient)
+
+	s := grpc.NewServer(
+		grpc.UnaryServerInterceptor(interceptor.IncomingRequest()),
+	)
+
+	implServer := NewServer(authServ)
 	lgrpc.RegisterAuthServer(s, implServer)
 	reflection.Register(s)
 	log.Println("gRPC server started on port", PORT)
@@ -88,5 +100,34 @@ func main() {
 }
 
 type server struct {
+	authServ auth.Service
 	lgrpc.UnimplementedAuthServer
+}
+
+func NewServer(auth auth.Service) *server {
+	return &server{
+		authServ: auth,
+	}
+}
+
+func (s server) Login(ctx context.Context, req *lgrpc.LoginRequest) (*lgrpc.LoginResponse, error) {
+	// TODO implement me
+	panic("implement me")
+}
+
+func (s server) GetAllUser(context.Context, *lgrpc.Empty) (*lgrpc.GetAllUserResponse, error) {
+	panic("implement me")
+
+}
+func (s server) CreateUser(context.Context, *lgrpc.CreateUserRequest) (*lgrpc.Response, error) {
+	panic("implement me")
+
+}
+func (s server) UpdateUser(context.Context, *lgrpc.UpdateUserRequest) (*lgrpc.Response, error) {
+	panic("implement me")
+
+}
+func (s server) DeleteUser(context.Context, *lgrpc.DeleteUserRequest) (*lgrpc.Response, error) {
+	panic("implement me")
+
 }
